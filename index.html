@@ -402,7 +402,7 @@
       { id:'tiempo_esperado', label:'¿Tienes alguna idea de cuánto tiempo te gustaría tener esto listo? (Opcional)', type:'text', placeholder:'Opcional' }
     ]},
     { id:'clave', title:'La pregunta clave', sub:'Esta es la que más me va a orientar de todas.', fields:[
-      { id:'una_cosa', label:'Si pudiéramos resolver una sola cosa con esta aplicación, ¿cuál sería, Doctor?', type:'textarea', big:true }
+      { id:'una_cosa', label:'Si pudiéramos resolver una sola cosa con esta aplicación, ¿cuál sería, Rommer?', type:'textarea', big:true }
     ]},
     { id:'summary', kind:'summary' }
   ];
@@ -537,12 +537,12 @@
     var el = document.createElement('div');
     el.className = 'intro';
     el.innerHTML =
-      '<h1>Doctor Rommer, buenas</h1>' +
-      '<p>Te escribo porque tengo la idea de hacerte una aplicación de gestión de tus consultas, hecha a tu medida — pacientes, citas, recetas, lo que realmente te sirva en el día a día.</p>' +
-      '<p>Antes de ponerme a construir cualquier cosa, prefiero entender bien cómo trabajas hoy, para no estar adivinando ni hacerte perder el tiempo con algo que no te sirva. Por eso armé este cuestionario.</p>' +
+      '<h1>Saludos, Rommer</h1>' +
+      '<p>Como ya te comenté personalmente, la idea es desarrollar una aplicación médica para organizar tu consulta — pacientes, citas, historial, recetas, lo que de verdad te sirva en el día a día. Y quiero que el primer piloto seas tú: es mi forma de devolver, aunque sea un poco, todo el cariño y el apoyo que le has dado a mi familia estos años con tus conocimientos médicos.</p>' +
+      '<p>Antes de ponerme a construir, necesito entender bien cómo trabajas hoy, para hacerte algo que de verdad te sirva y no una app genérica. Por eso te armé este cuestionario.</p>' +
       '<p>Te va a tomar unos diez o quince minutos. No hay respuestas correctas ni incorrectas — mientras más detalle me des, mejor va a quedar la aplicación para ti. Y lo que no aplique, lo dejas en blanco tranquilo.</p>' +
-      '<p>Al final te va a aparecer un resumen de todo lo que respondiste, listo para copiar o descargar. Con eso arranco a diseñarte la aplicación.</p>' +
-      '<div class="signoff">¡Gracias, Doctor!</div>' +
+      '<p>Al terminar, tus respuestas se envían solas — no tienes que hacer nada más (aunque ahí también las puedes copiar o descargar, por si acaso).</p>' +
+      '<div class="signoff">¡Gracias, Rommer!</div>' +
       '<div class="meta">Mientras completas el cuestionario, tus respuestas solo viven en este navegador. Al llegar al final se envían automáticamente a una base de datos privada — nadie más que yo puede leerlas.</div>';
 
     var nav = document.createElement('div');
@@ -594,7 +594,7 @@
     el.className = 'summary';
 
     var h2 = document.createElement('h2');
-    h2.textContent = 'Listo, Doctor — esto es todo';
+    h2.textContent = 'Listo, Rommer — esto es todo';
     var sub = document.createElement('p');
     sub.className = 'sum-sub';
     sub.textContent = 'Gracias por tomarte el tiempo. Tus respuestas ya se están enviando solas — y por si acaso, también puedes copiarlas o descargarlas y mandármelas por WhatsApp o correo.';
@@ -609,12 +609,12 @@
     if(!submitted){
       submitted = true;
       submitToSupabase(buildSummaryText()).then(function(){
-        sendStatus.textContent = 'Enviado. Ya me llegó todo — gracias, Doctor.';
+        sendStatus.textContent = 'Enviado. Ya me llegó todo — gracias, Rommer.';
       }).catch(function(){
         sendStatus.textContent = 'No se pudo enviar solo. Usa "Copiar resumen" o "Descargar" y mándamelo por WhatsApp, por si acaso.';
       });
     } else {
-      sendStatus.textContent = 'Enviado. Ya me llegó todo — gracias, Doctor.';
+      sendStatus.textContent = 'Enviado. Ya me llegó todo — gracias, Rommer.';
     }
 
     var block = document.createElement('div');
