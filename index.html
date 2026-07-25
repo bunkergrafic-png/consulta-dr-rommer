@@ -1,0 +1,712 @@
+<title>Cuestionario para el Dr. Rommer Rondón</title>
+<style>
+  :root{
+    --bg:#F5F6F2;
+    --surface:#FFFFFF;
+    --surface-line: rgba(27,36,32,0.05);
+    --ink:#1B2420;
+    --ink-muted:#5B665F;
+    --ink-faint:#8B948D;
+    --accent:#1F6F5C;
+    --accent-strong:#164F42;
+    --accent-wash: rgba(31,111,92,0.09);
+    --line:#D8DED7;
+    --gold:#B98A3E;
+    --danger:#A24B3A;
+    --radius: 10px;
+    --font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#121714;
+      --surface:#182019;
+      --surface-line: rgba(232,236,230,0.05);
+      --ink:#E8ECE6;
+      --ink-muted:#9DAAA1;
+      --ink-faint:#6C766F;
+      --accent:#4FBFA0;
+      --accent-strong:#6FD6B8;
+      --accent-wash: rgba(79,191,160,0.12);
+      --line:#2A332C;
+      --gold:#D6A55C;
+      --danger:#D98A76;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121714; --surface:#182019; --surface-line: rgba(232,236,230,0.05);
+    --ink:#E8ECE6; --ink-muted:#9DAAA1; --ink-faint:#6C766F;
+    --accent:#4FBFA0; --accent-strong:#6FD6B8; --accent-wash: rgba(79,191,160,0.12);
+    --line:#2A332C; --gold:#D6A55C; --danger:#D98A76;
+  }
+  :root[data-theme="light"]{
+    --bg:#F5F6F2; --surface:#FFFFFF; --surface-line: rgba(27,36,32,0.05);
+    --ink:#1B2420; --ink-muted:#5B665F; --ink-faint:#8B948D;
+    --accent:#1F6F5C; --accent-strong:#164F42; --accent-wash: rgba(31,111,92,0.09);
+    --line:#D8DED7; --gold:#B98A3E; --danger:#A24B3A;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 28px 18px 60px;
+  }
+  .wrap{
+    width:100%;
+    max-width:620px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+
+  .eyebrow{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:12px;
+    padding: 0 4px;
+  }
+  .eyebrow-label{
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-muted);
+  }
+  .eyebrow-count{
+    font-variant-numeric: tabular-nums;
+    font-size:12px;
+    color:var(--ink-faint);
+    letter-spacing:0.04em;
+  }
+
+  .progress{
+    display:flex;
+    gap:4px;
+    padding:0 4px;
+  }
+  .progress span{
+    flex:1;
+    height:3px;
+    border-radius:2px;
+    background:var(--line);
+    transition: background .25s ease;
+  }
+  .progress span.done{ background:var(--accent); }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px 28px;
+    position:relative;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent, transparent 27px,
+      var(--surface-line) 27px, var(--surface-line) 28px
+    );
+    background-position: 0 78px;
+  }
+  @media (max-width:480px){
+    .card{ padding:24px 18px; }
+  }
+
+  .step-title{
+    font-family:var(--font-display);
+    font-size:24px;
+    line-height:1.25;
+    margin:0 0 6px;
+    text-wrap:balance;
+    color:var(--ink);
+  }
+  .step-sub{
+    font-size:14.5px;
+    color:var(--ink-muted);
+    margin:0 0 26px;
+    line-height:1.55;
+    max-width:52ch;
+  }
+
+  .field{ margin-bottom:26px; }
+  .field:last-child{ margin-bottom:4px; }
+  .field-label{
+    display:block;
+    font-size:15px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:10px;
+    line-height:1.4;
+  }
+  input[type="text"], textarea{
+    width:100%;
+    font-family:var(--font-body);
+    font-size:15px;
+    color:var(--ink);
+    background:transparent;
+    border:none;
+    border-bottom:1.5px solid var(--line);
+    padding:8px 2px;
+    outline:none;
+    transition:border-color .15s ease;
+  }
+  input[type="text"]:focus, textarea:focus{ border-color:var(--accent); }
+  textarea{
+    resize:vertical;
+    min-height:76px;
+    line-height:1.55;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:10px 12px;
+  }
+  textarea.big{ min-height:110px; }
+  textarea:focus{ border-color:var(--accent); }
+  ::placeholder{ color:var(--ink-faint); }
+
+  .options{ display:flex; flex-direction:column; gap:2px; }
+  .opt-row{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+    padding:9px 6px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14.5px;
+    line-height:1.4;
+  }
+  .opt-row:hover{ background:var(--accent-wash); }
+  .opt-row input{ accent-color:var(--accent); margin-top:2px; width:16px; height:16px; flex-shrink:0; }
+  .opt-row input:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .opt-other{
+    margin-top:8px;
+    margin-left:6px;
+  }
+  .opt-other input{
+    font-size:14px;
+    border-bottom:1px solid var(--line);
+    padding:6px 2px;
+  }
+
+  .nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-top:8px;
+  }
+  button{ font-family:var(--font-body); cursor:pointer; }
+  .btn{
+    border:none;
+    border-radius:7px;
+    padding:12px 20px;
+    font-size:14.5px;
+    font-weight:600;
+    transition: transform .1s ease, background .15s ease, opacity .15s ease;
+  }
+  .btn:active{ transform: scale(0.98); }
+  .btn-primary{ background:var(--accent); color:#F5F6F2; }
+  .btn-primary:hover{ background:var(--accent-strong); }
+  .btn-ghost{ background:transparent; color:var(--ink-muted); padding:12px 8px; }
+  .btn-ghost:hover{ color:var(--ink); }
+  .btn:disabled{ opacity:0.45; cursor:default; }
+  .btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .intro{ text-align:left; }
+  .intro h1{
+    font-family:var(--font-display);
+    font-size:28px;
+    line-height:1.3;
+    margin:0 0 18px;
+    text-wrap:balance;
+  }
+  .intro p{
+    font-size:15.5px;
+    line-height:1.7;
+    color:var(--ink);
+    margin:0 0 16px;
+  }
+  .intro .signoff{
+    margin-top:24px;
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:16px;
+    color:var(--ink-muted);
+  }
+  .intro .meta{
+    font-size:13px;
+    color:var(--ink-faint);
+    margin-top:22px;
+    border-top:1px solid var(--line);
+    padding-top:16px;
+  }
+
+  .summary h2{
+    font-family:var(--font-display);
+    font-size:22px;
+    margin:0 0 4px;
+  }
+  .summary .sum-sub{ font-size:14px; color:var(--ink-muted); margin:0 0 20px; }
+  .sum-block{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px 16px;
+    font-size:13px;
+    line-height:1.7;
+    white-space:pre-wrap;
+    max-height:420px;
+    overflow-y:auto;
+    color:var(--ink);
+  }
+  .sum-actions{
+    display:flex;
+    gap:10px;
+    margin-top:16px;
+    flex-wrap:wrap;
+  }
+  .toast{
+    font-size:13px;
+    color:var(--accent-strong);
+    margin-top:10px;
+    min-height:16px;
+  }
+  .reset-link{
+    display:inline-block;
+    margin-top:20px;
+    font-size:13px;
+    color:var(--ink-faint);
+    text-decoration:underline;
+    background:none;
+    border:none;
+    padding:0;
+  }
+  .reset-link:hover{ color:var(--ink-muted); }
+
+  .privacy-note{
+    font-size:12.5px;
+    color:var(--ink-faint);
+    text-align:center;
+    line-height:1.6;
+    max-width:52ch;
+    margin:4px auto 0;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
+
+<div class="page">
+  <div class="wrap">
+    <div class="eyebrow">
+      <span class="eyebrow-label">Cuestionario · Dr. Rommer Rondón</span>
+      <span class="eyebrow-count" id="stepCount"></span>
+    </div>
+    <div class="progress" id="progress"></div>
+    <div class="card" id="card"></div>
+    <p class="privacy-note">Tus respuestas se guardan solo en este dispositivo, en este navegador. No se envían a ningún lado hasta que las copies o descargues.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'cuestionario_dr_rommer_v1';
+
+  var steps = [
+    { id:'intro', kind:'intro' },
+    { id:'basicos', title:'Antes de empezar', sub:'Para saber a quién te estoy escribiendo, aunque ya lo sepas de sobra.', fields:[
+      { id:'nombre', label:'Tu nombre completo', type:'text', placeholder:'Dr. Rommer Rondón' },
+      { id:'especialidad', label:'Especialidad', type:'text', placeholder:'Ej: Medicina general, Pediatría...' },
+      { id:'anios', label:'¿Hace cuántos años ejerces?', type:'text', placeholder:'Ej: 8 años' }
+    ]},
+    { id:'flujo', title:'Cómo trabajas hoy', sub:'Esto es lo más importante de todo el cuestionario. Con esto empiezo.', fields:[
+      { id:'agenda_hoy', label:'¿Cómo agendas las citas hoy?', type:'checkbox', allowOther:true, options:['WhatsApp','Llamadas por teléfono','Agenda de papel','Alguna aplicación'] },
+      { id:'quien_agenda', label:'¿Quién se encarga de agendar?', type:'radio', allowOther:true, options:['Tú mismo','Una secretaria o asistente','No hay alguien fijo para eso'] },
+      { id:'donde_historial', label:'¿Dónde guardas hoy el historial de tus pacientes?', type:'checkbox', allowOther:true, options:['Papel o fichas físicas','Excel','Word','No lo tengo organizado en ningún lado'] },
+      { id:'dia_tipico', label:'Cuéntame un día típico de consultas, paso a paso: desde que llega el paciente hasta que se va.', type:'textarea' },
+      { id:'molestia', label:'De todo ese proceso, ¿qué es lo que más tiempo te quita o más te fastidia?', type:'textarea' }
+    ]},
+    { id:'pacientes', title:'Pacientes e historial', fields:[
+      { id:'datos_paciente', label:'¿Qué datos necesitas guardar de cada paciente?', type:'checkbox', allowOther:true, options:['Nombre','Cédula','Edad o fecha de nacimiento','Teléfono','Dirección','Alergias','Antecedentes médicos'] },
+      { id:'ver_historial', label:'¿Necesitas ver todo el historial del paciente en una sola pantalla mientras lo atiendes?', type:'radio', options:['Sí','No','No estoy seguro'] },
+      { id:'cronicos', label:'¿Atiendes pacientes crónicos que requieran seguimiento, como hipertensión o diabetes?', type:'radio', options:['Sí, con frecuencia','A veces','Casi nunca'] },
+      { id:'archivos', label:'¿Necesitas adjuntar archivos por paciente, como estudios, radiografías o laboratorios?', type:'radio', options:['Sí','No','Tal vez más adelante'] }
+    ]},
+    { id:'agenda', title:'Agenda y citas', fields:[
+      { id:'duracion', label:'¿Cuánto dura normalmente una consulta?', type:'radio', options:['15 minutos','20 a 30 minutos','45 a 60 minutos','Varía mucho'] },
+      { id:'horarios', label:'¿Tus horarios son fijos por día, o cambian seguido?', type:'radio', options:['Fijos','Variables'] },
+      { id:'cita_online', label:'¿Te gustaría que el paciente pueda pedir su cita directamente, sin que tú o alguien más lo agende?', type:'radio', options:['Sí, me ahorraría trabajo','No, prefiero controlarlo yo','No estoy seguro'] },
+      { id:'cancelaciones', label:'¿Tienes muchas cancelaciones o lista de espera?', type:'radio', options:['Sí, seguido','De vez en cuando','Casi nunca'] },
+      { id:'recordatorios', label:'¿Te serviría que el sistema le recuerde la cita al paciente por WhatsApp el día antes?', type:'radio', options:['Sí, me ayudaría mucho','No es necesario'] }
+    ]},
+    { id:'consulta', title:'Durante la consulta', fields:[
+      { id:'anota', label:'¿Qué anotas normalmente en cada consulta?', type:'checkbox', allowOther:true, options:['Motivo de consulta','Diagnóstico','Tratamiento indicado','Notas libres'] },
+      { id:'plantilla', label:'¿Usas algún formato propio para tus notas, o escribes libre?', type:'radio', options:['Tengo un formato propio','Escribo libre, sin formato fijo'] },
+      { id:'signos', label:'¿Necesitas registrar signos vitales, como peso, presión o temperatura?', type:'radio', options:['Sí','No'] }
+    ]},
+    { id:'recetas', title:'Recetas y órdenes', fields:[
+      { id:'como_receta', label:'¿Cómo emites las recetas hoy?', type:'radio', options:['A mano','En Word u otro programa','No emito recetas yo mismo'] },
+      { id:'receta_pdf', label:'¿Te serviría generar la receta lista en PDF, con tu membrete y firma?', type:'radio', options:['Sí, me ahorraría tiempo','No es necesario'] },
+      { id:'ordenes', label:'¿Emites órdenes de laboratorio o referencias a otros especialistas?', type:'radio', options:['Sí, frecuentemente','A veces','Casi nunca'] }
+    ]},
+    { id:'cobros', title:'Cobros', fields:[
+      { id:'cobra', label:'¿Tú cobras la consulta directamente, o lo maneja otra persona?', type:'radio', options:['Yo cobro directamente','Lo maneja otra persona','No cobro consulta fija'] },
+      { id:'registro_pagos', label:'¿Necesitas llevar un registro de pagos y pendientes?', type:'radio', options:['Sí','No'] },
+      { id:'seguros', label:'¿Trabajas con seguros médicos que exijan algún formato o papeleo especial?', type:'radio', options:['Sí','No'] },
+      { id:'seguros_detalle', label:'Si trabajas con seguros, cuéntame un poco cómo es ese proceso.', type:'textarea' }
+    ]},
+    { id:'personal', title:'Tu equipo de trabajo', fields:[
+      { id:'equipo', label:'¿Trabajas solo, o tienes secretaria o enfermera que también necesitaría usar el sistema?', type:'radio', options:['Trabajo solo','Tengo una persona que me ayuda','Tengo más de una persona'] },
+      { id:'quien_ve_que', label:'Si hay más de una persona, ¿todos deberían ver toda la información, o hay cosas que solo tú deberías ver?', type:'textarea' },
+      { id:'consultorios', label:'¿Atiendes en un solo consultorio o en varios lugares?', type:'radio', options:['Un solo consultorio','Más de un lugar'] }
+    ]},
+    { id:'reportes', title:'Reportes', fields:[
+      { id:'reportes', label:'¿Te interesaría ver estadísticas de tu consulta?', type:'checkbox', options:['Cuántos pacientes atendí en un período','Cuánto ingresé en el mes','Los motivos de consulta más comunes','Por ahora no me interesa'] }
+    ]},
+    { id:'practico', title:'Cómo trabajarías con esto', fields:[
+      { id:'comodidad_tec', label:'¿Qué tan cómodo te sientes con la tecnología?', type:'radio', options:['Poca, prefiero lo más simple posible','Media, me manejo bien con lo básico','Alta, no tengo problema con nada'] },
+      { id:'dispositivo', label:'¿Trabajarías más desde una computadora, desde el celular, o ambos?', type:'radio', options:['Computadora','Celular','Ambos'] },
+      { id:'privacidad', label:'¿Te preocupa la privacidad de los datos de tus pacientes?', type:'radio', options:['Sí, mucho','Algo','No es algo que me preocupe especialmente'] },
+      { id:'tiempo_esperado', label:'¿Tienes alguna idea de cuánto tiempo te gustaría tener esto listo? (Opcional)', type:'text', placeholder:'Opcional' }
+    ]},
+    { id:'clave', title:'La pregunta clave', sub:'Esta es la que más me va a orientar de todas.', fields:[
+      { id:'una_cosa', label:'Si pudiéramos resolver una sola cosa con esta aplicación, ¿cuál sería, Doctor?', type:'textarea', big:true }
+    ]},
+    { id:'summary', kind:'summary' }
+  ];
+
+  var contentSteps = steps.filter(function(s){ return !s.kind; });
+  var totalContent = contentSteps.length;
+
+  var state = loadState();
+  var current = 0;
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var cardEl = document.getElementById('card');
+  var progressEl = document.getElementById('progress');
+  var countEl = document.getElementById('stepCount');
+
+  function contentIndexOf(stepIdx){
+    var s = steps[stepIdx];
+    return contentSteps.indexOf(s);
+  }
+
+  function renderProgress(){
+    var step = steps[current];
+    if(step.kind){
+      progressEl.style.visibility = 'hidden';
+      countEl.textContent = '';
+      return;
+    }
+    progressEl.style.visibility = 'visible';
+    var idx = contentIndexOf(current);
+    progressEl.innerHTML = '';
+    for(var i=0;i<totalContent;i++){
+      var span = document.createElement('span');
+      if(i<=idx) span.className = 'done';
+      progressEl.appendChild(span);
+    }
+    var num = String(idx+1).padStart(2,'0');
+    var den = String(totalContent).padStart(2,'0');
+    countEl.textContent = num + ' / ' + den;
+  }
+
+  function fieldRow(field){
+    var wrap = document.createElement('div');
+    wrap.className = 'field';
+
+    var label = document.createElement('label');
+    label.className = 'field-label';
+    label.textContent = field.label;
+    wrap.appendChild(label);
+
+    if(field.type === 'text'){
+      var inp = document.createElement('input');
+      inp.type = 'text';
+      inp.placeholder = field.placeholder || '';
+      inp.value = state[field.id] || '';
+      inp.addEventListener('input', function(){ state[field.id] = inp.value; saveState(); });
+      wrap.appendChild(inp);
+    }
+
+    if(field.type === 'textarea'){
+      var ta = document.createElement('textarea');
+      if(field.big) ta.className = 'big';
+      ta.placeholder = field.placeholder || 'Puedes dejarlo en blanco si no aplica.';
+      ta.value = state[field.id] || '';
+      ta.addEventListener('input', function(){ state[field.id] = ta.value; saveState(); });
+      wrap.appendChild(ta);
+    }
+
+    if(field.type === 'radio' || field.type === 'checkbox'){
+      var opts = document.createElement('div');
+      opts.className = 'options';
+      var stored = state[field.id];
+      if(field.type === 'checkbox' && !Array.isArray(stored)) stored = [];
+      if(field.type === 'radio' && typeof stored !== 'string') stored = '';
+
+      field.options.forEach(function(optLabel, i){
+        var row = document.createElement('label');
+        row.className = 'opt-row';
+        var input = document.createElement('input');
+        input.type = field.type;
+        input.name = field.id;
+        input.value = optLabel;
+        if(field.type === 'radio'){
+          input.checked = stored === optLabel;
+          input.addEventListener('change', function(){
+            state[field.id] = optLabel; saveState();
+          });
+        } else {
+          input.checked = stored.indexOf(optLabel) !== -1;
+          input.addEventListener('change', function(){
+            var arr = Array.isArray(state[field.id]) ? state[field.id].slice() : [];
+            var pos = arr.indexOf(optLabel);
+            if(input.checked && pos === -1) arr.push(optLabel);
+            if(!input.checked && pos !== -1) arr.splice(pos,1);
+            state[field.id] = arr; saveState();
+          });
+        }
+        var txt = document.createElement('span');
+        txt.textContent = optLabel;
+        row.appendChild(input);
+        row.appendChild(txt);
+        opts.appendChild(row);
+      });
+      wrap.appendChild(opts);
+
+      if(field.allowOther){
+        var otherWrap = document.createElement('div');
+        otherWrap.className = 'opt-other';
+        var otherInp = document.createElement('input');
+        otherInp.type = 'text';
+        otherInp.placeholder = 'Otro (opcional)';
+        var otherKey = field.id + '__otro';
+        otherInp.value = state[otherKey] || '';
+        otherInp.addEventListener('input', function(){ state[otherKey] = otherInp.value; saveState(); });
+        otherWrap.appendChild(otherInp);
+        wrap.appendChild(otherWrap);
+      }
+    }
+
+    return wrap;
+  }
+
+  function renderIntro(){
+    var el = document.createElement('div');
+    el.className = 'intro';
+    el.innerHTML =
+      '<h1>Doctor Rommer, buenas</h1>' +
+      '<p>Te escribo porque tengo la idea de hacerte una aplicación de gestión de tus consultas, hecha a tu medida — pacientes, citas, recetas, lo que realmente te sirva en el día a día.</p>' +
+      '<p>Antes de ponerme a construir cualquier cosa, prefiero entender bien cómo trabajas hoy, para no estar adivinando ni hacerte perder el tiempo con algo que no te sirva. Por eso armé este cuestionario.</p>' +
+      '<p>Te va a tomar unos diez o quince minutos. No hay respuestas correctas ni incorrectas — mientras más detalle me des, mejor va a quedar la aplicación para ti. Y lo que no aplique, lo dejas en blanco tranquilo.</p>' +
+      '<p>Al final te va a aparecer un resumen de todo lo que respondiste, listo para copiar o descargar. Con eso arranco a diseñarte la aplicación.</p>' +
+      '<div class="signoff">¡Gracias, Doctor!</div>' +
+      '<div class="meta">Tus respuestas quedan guardadas únicamente en este navegador mientras las completas. No se envían a ningún lado hasta que decidas copiarlas o descargarlas.</div>';
+
+    var nav = document.createElement('div');
+    nav.className = 'nav';
+    nav.style.justifyContent = 'flex-end';
+    var startBtn = document.createElement('button');
+    startBtn.className = 'btn btn-primary';
+    startBtn.textContent = 'Comenzar';
+    startBtn.addEventListener('click', function(){ current = 1; render(); });
+    nav.appendChild(startBtn);
+    el.appendChild(nav);
+    return el;
+  }
+
+  function buildSummaryText(){
+    var lines = [];
+    lines.push('CUESTIONARIO PARA LA APLICACIÓN DEL DR. ROMMER RONDÓN');
+    lines.push('Respondido el ' + new Date().toLocaleDateString('es-VE', { year:'numeric', month:'long', day:'numeric' }));
+    lines.push('');
+
+    contentSteps.forEach(function(step){
+      lines.push('== ' + step.title.toUpperCase() + ' ==');
+      step.fields.forEach(function(field){
+        var val = state[field.id];
+        var answer = '(no respondió)';
+        if(field.type === 'checkbox'){
+          var arr = Array.isArray(val) ? val.slice() : [];
+          var other = state[field.id + '__otro'];
+          if(other) arr.push(other);
+          answer = arr.length ? arr.join(', ') : '(no respondió)';
+        } else if(field.type === 'radio'){
+          var other2 = state[field.id + '__otro'];
+          if(val === 'Otro' && other2) answer = other2;
+          else answer = val || (other2 ? other2 : '(no respondió)');
+        } else {
+          answer = (val && String(val).trim()) ? val : '(no respondió)';
+        }
+        lines.push('- ' + field.label);
+        lines.push('  ' + answer);
+      });
+      lines.push('');
+    });
+
+    return lines.join('\n');
+  }
+
+  function renderSummary(){
+    var el = document.createElement('div');
+    el.className = 'summary';
+
+    var h2 = document.createElement('h2');
+    h2.textContent = 'Listo, Doctor — esto es todo';
+    var sub = document.createElement('p');
+    sub.className = 'sum-sub';
+    sub.textContent = 'Gracias por tomarte el tiempo. Copia o descarga este resumen y envíamelo por WhatsApp o correo — con esto empiezo a diseñarte la aplicación.';
+    el.appendChild(h2);
+    el.appendChild(sub);
+
+    var block = document.createElement('div');
+    block.className = 'sum-block';
+    var summaryText = buildSummaryText();
+    block.textContent = summaryText;
+    el.appendChild(block);
+
+    var actions = document.createElement('div');
+    actions.className = 'sum-actions';
+
+    var copyBtn = document.createElement('button');
+    copyBtn.className = 'btn btn-primary';
+    copyBtn.textContent = 'Copiar resumen';
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+
+    copyBtn.addEventListener('click', function(){
+      var text = buildSummaryText();
+      function ok(){ toast.textContent = 'Copiado. Ya lo puedes pegar en WhatsApp o correo.'; }
+      function fail(){
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus(); ta.select();
+        try{
+          document.execCommand('copy');
+          ok();
+        }catch(e){
+          toast.textContent = 'No se pudo copiar automáticamente. Selecciona el texto de arriba y cópialo manualmente.';
+        }
+        document.body.removeChild(ta);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(ok).catch(fail);
+      } else {
+        fail();
+      }
+    });
+
+    var downloadBtn = document.createElement('button');
+    downloadBtn.className = 'btn btn-ghost';
+    downloadBtn.textContent = 'Descargar como archivo';
+    downloadBtn.addEventListener('click', function(){
+      try{
+        var blob = new Blob([buildSummaryText()], { type:'text/plain;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'cuestionario-dr-rommer-rondon.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+        toast.textContent = 'Descargado. Ya lo puedes enviar por WhatsApp o correo.';
+      }catch(e){
+        toast.textContent = 'No se pudo descargar — usa "Copiar resumen" en su lugar.';
+      }
+    });
+
+    actions.appendChild(copyBtn);
+    actions.appendChild(downloadBtn);
+    el.appendChild(actions);
+    el.appendChild(toast);
+
+    var resetBtn = document.createElement('button');
+    resetBtn.className = 'reset-link';
+    resetBtn.textContent = 'Volver a empezar de cero';
+    resetBtn.addEventListener('click', function(){
+      if(confirm('¿Borrar todas las respuestas y empezar de nuevo?')){
+        state = {};
+        saveState();
+        current = 0;
+        render();
+      }
+    });
+    el.appendChild(resetBtn);
+
+    return el;
+  }
+
+  function renderContentStep(step){
+    var el = document.createElement('div');
+    var title = document.createElement('h2');
+    title.className = 'step-title';
+    title.textContent = step.title;
+    el.appendChild(title);
+    if(step.sub){
+      var sub = document.createElement('p');
+      sub.className = 'step-sub';
+      sub.textContent = step.sub;
+      el.appendChild(sub);
+    }
+    step.fields.forEach(function(f){ el.appendChild(fieldRow(f)); });
+
+    var nav = document.createElement('div');
+    nav.className = 'nav';
+
+    var backBtn = document.createElement('button');
+    backBtn.className = 'btn btn-ghost';
+    backBtn.textContent = '← Atrás';
+    backBtn.addEventListener('click', function(){ current -= 1; render(); });
+
+    var nextBtn = document.createElement('button');
+    nextBtn.className = 'btn btn-primary';
+    var isLastContent = current === steps.length - 2;
+    nextBtn.textContent = isLastContent ? 'Ver resumen' : 'Siguiente →';
+    nextBtn.addEventListener('click', function(){ current += 1; render(); });
+
+    nav.appendChild(backBtn);
+    nav.appendChild(nextBtn);
+    el.appendChild(nav);
+
+    return el;
+  }
+
+  function render(){
+    var step = steps[current];
+    cardEl.innerHTML = '';
+    renderProgress();
+
+    var content;
+    if(step.kind === 'intro') content = renderIntro();
+    else if(step.kind === 'summary') content = renderSummary();
+    else content = renderContentStep(step);
+
+    cardEl.appendChild(content);
+    window.scrollTo(0,0);
+  }
+
+  render();
+})();
+</script>
