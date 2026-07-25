@@ -312,13 +312,37 @@
     </div>
     <div class="progress" id="progress"></div>
     <div class="card" id="card"></div>
-    <p class="privacy-note">Tus respuestas se guardan solo en este dispositivo, en este navegador. No se envían a ningún lado hasta que las copies o descargues.</p>
+    <p class="privacy-note">Mientras respondes, tus datos solo viven en este navegador. Al terminar se envían automáticamente a una base de datos privada — nadie más puede leerlos.</p>
   </div>
 </div>
 
 <script>
 (function(){
   var STORAGE_KEY = 'cuestionario_dr_rommer_v1';
+  var SUPABASE_URL = 'https://xtxndwyusjntudlheqpx.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_Hg-3MSa_4Fma6MPljPANiQ_wrPWxUea';
+  var submitted = false;
+
+  function submitToSupabase(resumenText){
+    return fetch(SUPABASE_URL + '/rest/v1/respuestas_cuestionario', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        nombre: state.nombre || null,
+        especialidad: state.especialidad || null,
+        respuestas: state,
+        resumen: resumenText
+      })
+    }).then(function(res){
+      if(!res.ok) throw new Error('status ' + res.status);
+      return true;
+    });
+  }
 
   var steps = [
     { id:'intro', kind:'intro' },
@@ -519,7 +543,7 @@
       '<p>Te va a tomar unos diez o quince minutos. No hay respuestas correctas ni incorrectas — mientras más detalle me des, mejor va a quedar la aplicación para ti. Y lo que no aplique, lo dejas en blanco tranquilo.</p>' +
       '<p>Al final te va a aparecer un resumen de todo lo que respondiste, listo para copiar o descargar. Con eso arranco a diseñarte la aplicación.</p>' +
       '<div class="signoff">¡Gracias, Doctor!</div>' +
-      '<div class="meta">Tus respuestas quedan guardadas únicamente en este navegador mientras las completas. No se envían a ningún lado hasta que decidas copiarlas o descargarlas.</div>';
+      '<div class="meta">Mientras completas el cuestionario, tus respuestas solo viven en este navegador. Al llegar al final se envían automáticamente a una base de datos privada — nadie más que yo puede leerlas.</div>';
 
     var nav = document.createElement('div');
     nav.className = 'nav';
@@ -573,9 +597,25 @@
     h2.textContent = 'Listo, Doctor — esto es todo';
     var sub = document.createElement('p');
     sub.className = 'sum-sub';
-    sub.textContent = 'Gracias por tomarte el tiempo. Copia o descarga este resumen y envíamelo por WhatsApp o correo — con esto empiezo a diseñarte la aplicación.';
+    sub.textContent = 'Gracias por tomarte el tiempo. Tus respuestas ya se están enviando solas — y por si acaso, también puedes copiarlas o descargarlas y mandármelas por WhatsApp o correo.';
     el.appendChild(h2);
     el.appendChild(sub);
+
+    var sendStatus = document.createElement('p');
+    sendStatus.className = 'toast';
+    sendStatus.textContent = 'Enviando tus respuestas…';
+    el.appendChild(sendStatus);
+
+    if(!submitted){
+      submitted = true;
+      submitToSupabase(buildSummaryText()).then(function(){
+        sendStatus.textContent = 'Enviado. Ya me llegó todo — gracias, Doctor.';
+      }).catch(function(){
+        sendStatus.textContent = 'No se pudo enviar solo. Usa "Copiar resumen" o "Descargar" y mándamelo por WhatsApp, por si acaso.';
+      });
+    } else {
+      sendStatus.textContent = 'Enviado. Ya me llegó todo — gracias, Doctor.';
+    }
 
     var block = document.createElement('div');
     block.className = 'sum-block';
@@ -649,6 +689,7 @@
       if(confirm('¿Borrar todas las respuestas y empezar de nuevo?')){
         state = {};
         saveState();
+        submitted = false;
         current = 0;
         render();
       }
